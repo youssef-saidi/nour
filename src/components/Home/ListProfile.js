@@ -4,22 +4,39 @@ import { Text } from 'react-native-paper'
 import { theme } from '../../core/theme'
 import Header from '../Header'
 import TextInput from '../TextInput'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import firebase from '../../../config'
+import CardComponent from './CardComponent'
+
+const database = firebase.database()
 
 const ListProfile = () => {
     const [recherche, setrecherche] = useState()
+    const [profiles, setProfiles] = useState([]);
 
-    const data =[{
-        name: "nnnnnn",
-        surname: "surname.value",
-        telephone: "tel.value"
-    },
-    {
-        name: "22222",
-        surname: "222222",
-        telephone: "2222222"
-    },
-]
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const snapshot = await database.ref('profils').once('value');
+            const data = snapshot.val();
+    
+            if (data) {
+              const profilesArray = Object.entries(data).map(([key, profile]) => ({
+                id: key,
+                ...profile,
+              }));
+              setProfiles(profilesArray);
+            }
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+    
+        fetchData();
+      }, []);
+    
+
+
   return (
     <Background>
     <Header>ListProfile</Header>
@@ -30,7 +47,16 @@ const ListProfile = () => {
         onChangeText={(text) => setrecherche({ value: text, error: '' })}
         secureTextEntry
       />
-      <FlatList style={styles.flat} data={data} renderItem={({item})=>{ return <Text>{item.name}</Text>}}></FlatList>
+      <FlatList style={styles.flat} data={profiles} 
+      renderItem={({item})=>{ 
+        return    <CardComponent
+        name={item.name}
+        surname={item.surname}
+        telephone={item.telephone}
+        imageSource={require('../../assets/user.png')}
+      />
+        }}>
+    </FlatList>
 
     
 </Background>
@@ -52,7 +78,5 @@ const styles = StyleSheet.create({
     flat: {
         width: "100%",
         marginBottom: 8,
-        // backgroundColor:theme.colors.secondary
-
     }
 })

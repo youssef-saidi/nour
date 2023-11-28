@@ -5,8 +5,8 @@ import { theme } from '../core/theme'
 const Background=({ children })=> {
   return (
     <ImageBackground
-      source={require('../assets/background_dot.png')}
-      resizeMode="repeat"
+      source={require('../assets/wave.jpg')}
+      resizeMode="stretch"
       style={styles.background}
     >
       <KeyboardAvoidingView style={styles.container} behavior="padding">

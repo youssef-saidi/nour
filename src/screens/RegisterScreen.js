@@ -45,8 +45,8 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
-      <Logo />
-      <Header>Create Account</Header>
+      {/* <Logo /> */}
+      <Header>Register</Header>
       <TextInput
         label="Name"
         returnKeyType="next"

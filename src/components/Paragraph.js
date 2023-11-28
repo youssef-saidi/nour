@@ -2,10 +2,10 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Text } from 'react-native-paper'
 
-export default function Paragraph(props) {
+const Paragraph=(props)=> {
   return <Text style={styles.text} {...props} />
 }
-
+export default Paragraph ;
 const styles = StyleSheet.create({
   text: {
     fontSize: 15,

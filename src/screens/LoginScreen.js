@@ -9,8 +9,11 @@ import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
 import { emailValidator,passwordValidator } from '../helpers/Validators'
+import firebase from '../../config'
 
-export default function LoginScreen({ navigation }) {
+const auth = firebase.auth()
+
+const LoginScreen=({ navigation })=> {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
@@ -22,11 +25,17 @@ export default function LoginScreen({ navigation }) {
       setPassword({ ...password, error: passwordError })
       return
     }
-    alert("email: "+email.value+" password: "+password.value)
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Dashboard' }],
+    const response=auth.signInWithEmailAndPassword(email.value,password.value);
+    response.then((res) => {
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      })
+    }).catch((err) => {
+      alert("Email or Password is incorrect !")
     })
+ 
   }
 
   return (
@@ -82,6 +91,8 @@ export default function LoginScreen({ navigation }) {
     </Background>
   )
 }
+
+export default LoginScreen ;
 
 const styles = StyleSheet.create({
   forgotPassword: {

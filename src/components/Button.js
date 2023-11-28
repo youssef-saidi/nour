@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Button as PaperButton } from 'react-native-paper'
 import { theme } from '../core/theme'
 
-export default function Button({ mode, style, ...props }) {
+const Button=({ mode, style, ...props })=> {
   return (
     <PaperButton
       style={[
@@ -17,7 +17,7 @@ export default function Button({ mode, style, ...props }) {
     />
   )
 }
-
+export default Button ;
 const styles = StyleSheet.create({
   button: {
     width: '100%',

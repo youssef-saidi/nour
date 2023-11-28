@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity,BackHandler } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, BackHandler } from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
 import Logo from '../components/Logo'
@@ -8,10 +8,12 @@ import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
-import { emailValidator,passwordValidator,nameValidator } from '../helpers/Validators'
+import { emailValidator, passwordValidator, nameValidator } from '../helpers/Validators'
+import firebase from '../../config'
 
+const auth = firebase.auth()
 
-export default function RegisterScreen({ navigation }) {
+const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState({ value: '', error: '' })
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
@@ -26,10 +28,18 @@ export default function RegisterScreen({ navigation }) {
       setPassword({ ...password, error: passwordError })
       return
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Dashboard' }],
+    const response = auth.createUserWithEmailAndPassword(email.value, password.value)
+    response.then((res) => {
+      alert("Register Successfully !")
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'LoginScreen' }],
+      })
+    }).catch((err) => {
+      alert("something went wrong please try again")
     })
+
   }
 
   return (
@@ -75,9 +85,9 @@ export default function RegisterScreen({ navigation }) {
       </Button>
       <Button
         mode="outlined"
-        onPress={() => BackHandler.exitApp()} 
+        onPress={() => BackHandler.exitApp()}
       >
-       Cancel
+        Cancel
       </Button>
       <View style={styles.row}>
         <Text>Already have an account? </Text>
@@ -88,7 +98,7 @@ export default function RegisterScreen({ navigation }) {
     </Background>
   )
 }
-
+export default RegisterScreen;
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',

@@ -2,7 +2,7 @@ import React from 'react'
 import { ImageBackground, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { theme } from '../core/theme'
 
-export default function Background({ children }) {
+const Background=({ children })=> {
   return (
     <ImageBackground
       source={require('../assets/background_dot.png')}
@@ -15,7 +15,7 @@ export default function Background({ children }) {
     </ImageBackground>
   )
 }
-
+export default Background;
 const styles = StyleSheet.create({
   background: {
     flex: 1,
